@@ -19,9 +19,13 @@ const wrap = (s, w) => {
   for (const par of String(s).split('\n')) {
     let line = '';
     for (let word of par.split(' ')) {
-      while (dw(word) > w) {               // palavra maior que a coluna (ex.: URL): corta
+      while (dw(word) > w) {               // palavra maior que a coluna (ex.: URL, caminho)
         if (line) { out.push(line); line = ''; }
-        out.push(word.slice(0, w)); word = word.slice(w);
+        // corta depois de / \ ? & = . - quando possível, para o link continuar legível
+        let cut = -1;
+        for (let i = Math.min(w, word.length) - 1; i > 0; i--) if ('/\\?&=.-#'.includes(word[i])) { cut = i + 1; break; }
+        if (cut < w / 2) cut = w;
+        out.push(word.slice(0, cut)); word = word.slice(cut);
       }
       if (line && dw(line + ' ' + word) > w) { out.push(line); line = word; }
       else line = line ? line + ' ' + word : word;
@@ -31,6 +35,7 @@ const wrap = (s, w) => {
   return out;
 };
 
+for (const c of cols) c.w = Math.max(c.w, dw(c.h));   // coluna nunca menor que o título
 const total = cols.reduce((n, c) => n + c.w + 3, 1);
 if (total > max) {
   console.error(`Tabela com ${total} caracteres; o máximo é ${max}. Reduza as larguras.`);

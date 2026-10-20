@@ -44,13 +44,13 @@ Dê opções concretas nas perguntas (ex.: 3 tons possíveis), com a recomendada
 ### 2. Etapa 1 — 3 abordagens em tabela enxuta
 Escreva **3 abordagens com ângulos realmente diferentes** (não três variações do mesmo texto). Exemplos de eixos: emocional × didático × provocativo; história × dado chocante × pergunta; problema → solução × antes/depois × mito/verdade.
 
-Cada abordagem já vem em **tabela enxuta** (Cena · Tempo · Texto/Locução · Visual resumido · [Δ] · Links), seguindo `references/formatos-de-saida.md` (Etapa 1). O texto completo da locução/copy está na tabela; o visual é só um resumo. Acima de cada tabela, fora dela: nome do ângulo, por que funciona para esse público, estrutura e duração estimada.
+Cada abordagem já vem em **tabela enxuta** (Cena · Texto/Locução · Visual resumido · [Texto original] · Link), seguindo `references/formatos-de-saida.md` (Etapa 1). O texto completo da locução/copy está na tabela; o visual é só um resumo. Acima de cada tabela, fora dela: nome do ângulo, por que funciona para esse público, estrutura e duração estimada.
 
-**Toda tabela vai dentro de um bloco de código**, com colunas alinhadas, **no máximo 86 caracteres de largura** (cabe na janela, sem rolagem lateral) e **linha pontilhada entre cada cena**. Gere com `scripts/tabela.js` quando houver Node — ele quebra o texto, alinha e trava a largura. Detalhes e larguras em `formatos-de-saida.md`.
+**Toda tabela vai dentro de um bloco de código**, com colunas alinhadas, **no máximo 86 caracteres de largura** (cabe na janela, sem rolagem lateral), **linha pontilhada entre cada cena** e coluna Cena fina (número em cima, tempo em duas linhas embaixo). Gere com `scripts/tabela.js` quando houver Node — ele quebra o texto, alinha e trava a largura. Detalhes e larguras em `formatos-de-saida.md`.
 
 **Colunas condicionais:**
-- **Link** (sempre a última): na tabela, só a etiqueta (`L1`, `L2`) ou `—`; abaixo do bloco, a legenda com o link completo e clicável — vídeos (com minutagem no link sempre que possível), sites, fotos da internet ou arquivos locais do usuário (caminho completo). Nunca invente URL nem minutagem.
-- **Δ (diferenças)**: só quando o usuário mandou um roteiro ou orientação como base. Marca cada linha com ✅ igual / ⚠️ ajustado (motivo) / ❌ removido ou contradiz (motivo). Sem material de base, a coluna não existe.
+- **Link** (sempre a última): o link completo dentro da célula (quebrado em linhas se precisar) — vídeos (com minutagem no link sempre que possível, e o tempo legível entre parênteses), sites, fotos da internet ou arquivos locais do usuário (caminho completo). Sem referência, `—`. Nunca invente URL nem minutagem.
+- **Texto original**: só quando o usuário mandou um roteiro ou orientação como base. Cada célula começa com o emoji — ✅ manteve / ⚠️ ajustado / ❌ removido ou contradiz / ➕ novo — seguido do trecho original do usuário entre aspas e, se preciso, o motivo entre parênteses. Sem material de base, a coluna não existe.
 
 Antes de mostrar, rode o **checklist interno** (abaixo) e reescreva o que falhar. Não mostre notas — entregue só o texto bom.
 
@@ -61,10 +61,10 @@ Aplique os ajustes pedidos. Se o usuário pedir mudanças, mostre a tabela enxut
 
 ### 4. Etapa 2 — Roteiro técnico completo
 Detalhe **só a abordagem escolhida**, com todas as colunas, em bloco de código, usando o modelo de `references/formatos-de-saida.md` (Etapa 2):
-- **Vídeo**: Cena · Tempo · Visual (o que se vê, enquadramento, movimento, transição) · Áudio (locução/diálogo, trilha, SFX) · Texto na tela · [Δ] · Links.
-- **Estático**: Slide/Peça · Visual (imagem, composição, destaque) · Copy (headline, apoio) · CTA/obs. · [Δ] · Links. Mais legenda e hashtags se for social.
+- **Vídeo**: Cena · Visual + tela (o que se vê, enquadramento, movimento, transição; termina com `TELA: …`) · Áudio (locução/diálogo, trilha, SFX) · [Texto original] · Link.
+- **Estático**: Slide/Peça · Visual (imagem, composição, destaque) · Copy + CTA · [Texto original] · Link. Mais legenda e hashtags se for social.
 
-O texto aprovado não muda na etapa 2, exceto cortes necessários para caber no tempo — e, se cortar, marque ⚠️ no Δ ou avise.
+O texto aprovado não muda na etapa 2, exceto cortes necessários para caber no tempo — e, se cortar, marque ⚠️ no texto original com o motivo.
 
 ## Checklist interno (antes de cada entrega)
 - **Gancho**: os primeiros 1–3 s (vídeo) ou a headline (estático) dão motivo concreto para continuar? Seria entendido sem som?
