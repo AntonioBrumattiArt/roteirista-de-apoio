@@ -1,0 +1,81 @@
+<h2 class="sr-only">Quadro do roteiro com copy, texto original, visual e link por cena, e botões de ação.</h2>
+<style>
+.tabs{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.tabs button.on{background:var(--bg-accent);color:var(--text-accent);border-color:var(--border-accent)}
+.why{font-size:13px;color:var(--text-secondary);margin:0 0 10px}
+.bd{display:inline-block;font-size:12px;padding:2px 10px;border-radius:var(--radius);background:var(--bg-success);color:var(--text-success);margin-right:8px}
+.rt{width:100%;table-layout:fixed;border-collapse:collapse;font-size:13px;line-height:1.5}
+.rt th{font-weight:500;text-align:left;color:var(--text-secondary);padding:8px;border-bottom:0.5px solid var(--border-strong)}
+.rt td{vertical-align:top;padding:10px 8px;white-space:pre-line;border-top:1px dotted var(--border-strong)}
+.rt tbody tr:first-child td{border-top:none}
+.rt th+th,.rt td+td{border-left:0.5px solid var(--border-strong)}
+.cp{position:relative;padding-right:32px!important}
+.ib{width:26px;height:26px;padding:0;font-size:14px;display:inline-flex;align-items:center;justify-content:center;margin-top:6px}
+.cp .ib{position:absolute;top:2px;right:4px}
+.tm{color:var(--text-secondary);font-size:12px}
+.mu{display:block;margin-top:8px;color:var(--text-secondary);font-size:12px}
+.lk{font-size:12px;word-break:break-all;white-space:normal}
+.wa{color:var(--text-warning)}.ok{color:var(--text-success)}.er{color:var(--text-danger)}.nw{color:var(--text-accent)}
+.foot{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.msg{font-size:12px;color:var(--text-secondary);margin-top:8px;min-height:18px}
+</style>
+<p class="why" id="ctx"></p>
+<div class="tabs" id="tabs"></div>
+<p class="why" id="why"></p>
+<table class="rt"><colgroup id="cg"></colgroup><thead><tr id="hd"></tr></thead><tbody id="tb"></tbody></table>
+<div class="foot" id="foot"></div>
+<p class="msg" id="msg"></p>
+<script>
+const Q=/*DADOS*/{};
+const M=Q.meta||{},U=(Q.rotulos&&Q.rotulos.unidade)||"Cena",T=(Q.rotulos&&Q.rotulos.texto)||"Locução",OR=!!Q.temOriginal,CONF=Q.modo==="confirmacao";
+const IC={w:"ti-alert-triangle wa",o:"ti-circle-check ok",x:"ti-circle-x er",n:"ti-circle-plus nw"},MK={w:"⚠️",o:"✅",x:"❌",n:"➕"};
+let cur=CONF?Q.escolhida:Q.abordagens[0].id;
+const ab=()=>Q.abordagens.find(a=>a.id===cur);
+const esc=s=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const tempo=l=>l.ini?`${l.ini}–${l.fim}`:"";
+const lkTxt=ls=>!ls||!ls.length?"—":ls.map(k=>k.url?`${k.url}${k.tempo?` (${k.tempo})`:""}`:k.caminho+(k.tempo?` (${k.tempo})`:"")).join("\n");
+const lkHtml=ls=>!ls||!ls.length?"—":ls.map(k=>k.url?`<a href="${esc(k.url)}">${esc(k.url)}</a>${k.tempo?` (${esc(k.tempo)})`:""}`:esc(k.caminho)+(k.tempo?` (${esc(k.tempo)})`:"")).join("<br>");
+const msg=t=>{document.getElementById("msg").textContent=t};
+function flash(b){const i=b.querySelector("i");if(!i)return;const c=i.className;i.className="ti ti-check";setTimeout(()=>i.className=c,1200)}
+function fb(t){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()}
+function copy(t,b,ok){const d=()=>{flash(b);if(ok)msg(ok)};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(d,()=>{fb(t);d()})}else{fb(t);d()}}
+function copyRich(p,h,b,ok){const d=()=>{flash(b);msg(ok)};try{if(window.ClipboardItem&&navigator.clipboard.write){navigator.clipboard.write([new ClipboardItem({"text/plain":new Blob([p],{type:"text/plain"}),"text/html":new Blob([h],{type:"text/html"})})]).then(d,()=>copy(p,b,ok));return}}catch(e){}copy(p,b,ok)}
+const linha1=()=>[M.plataforma,M.formato,M.duracao].filter(Boolean).join(" · ")+` · Abordagem ${cur} — ${ab().nome}`;
+function plain(full){const s="────────────────────────────",a=ab(),h=[`${full?"ROTEIRO":"ROTEIRO APROVADO"} — ${M.projeto}`,linha1(),s];
+a.linhas.forEach((l,i)=>{h.push(`${U.toUpperCase()} ${i+1}${tempo(l)?" · "+tempo(l):""}`,"",`${T}:`,l.texto,"");if(full&&OR)h.push(`Texto original: ${MK[l.status]||""}`,l.original,`Mudanças: ${l.mudancas||"—"}`,"");h.push(`Visual: ${l.visual}`,`Link: ${lkTxt(l.links)}`,s)});return h.join("\n")}
+function html(full){const c=s=>esc(s).replace(/\n/g,"<br>"),td='style="border:1px solid #999;padding:6px;vertical-align:top"',a=ab(),o=full&&OR;
+let h=`<p><b>${esc((full?"Roteiro":"Roteiro aprovado")+" — "+M.projeto)}</b><br>${esc(linha1())}</p><table style="border-collapse:collapse"><tr>${[U,T].concat(o?["Texto original"]:[],["Visual","Link"]).map(x=>`<th ${td}>${x}</th>`).join("")}</tr>`;
+a.linhas.forEach((l,i)=>{h+=`<tr><td ${td}>${i+1}${tempo(l)?"<br>"+l.ini+"–<br>"+l.fim:""}</td><td ${td}>${c(l.texto)}</td>`+(o?`<td ${td}>${MK[l.status]||""} ${c(l.original)}<br><br><i>Mudanças: ${c(l.mudancas||"—")}</i></td>`:"")+`<td ${td}>${c(l.visual)}</td><td ${td}>${c(lkTxt(l.links))}</td></tr>`});return h+"</table>"}
+function arquivo(){const a=ab(),h=[`# Roteiro aprovado — ${M.projeto}`,"","<!-- Gerado pela skill roteirista-de-apoio. Texto final aprovado: use a coluna "+T+" exatamente como está. -->","","## Contexto","- Status: APROVADO"];
+[["Tipo",M.tipo],["Plataforma",M.plataforma],["Formato",M.formato],["Duração total",M.duracao],[U+"s",a.linhas.length],["Público",M.publico],["Objetivo",M.objetivo],["CTA",M.cta],["Tom",M.tom],["Abordagem",`${cur} — ${a.nome}`]].forEach(([k,v])=>{if(v!==undefined&&v!=="")h.push(`- ${k}: ${v}`)});
+h.push("",`## ${U}s`,"");a.linhas.forEach((l,i)=>h.push(`### ${U} ${i+1}${tempo(l)?" | "+tempo(l):""}`,`- ${T} (texto final): ${l.texto.replace(/\n/g," / ")}`,`- Visual: ${l.visual}`,`- Referência: ${lkTxt(l.links).replace(/\n/g," · ")}`,""));
+if(T==="Locução")h.push("## Locução corrida","",a.linhas.map(l=>l.texto.replace(/^"|"$/g,"")).join(" "),"");return h.join("\n")}
+function baixar(b){const t=arquivo(),n=M.arquivo||"V1-roteiro.md";try{const u=URL.createObjectURL(new Blob([t],{type:"text/markdown;charset=utf-8"})),a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);msg("Baixando "+n+". Se não baixar, o texto também foi copiado.")}catch(e){msg("O download foi bloqueado aqui; o texto do arquivo foi copiado.")}copy(t,b)}
+function btn(id,ic,txt,fn){return{id,html:`<button id="${id}">${ic?`<i class="ti ${ic}" aria-hidden="true"></i> `:""}${txt}</button>`,fn}}
+function render(){const a=ab();
+document.getElementById("ctx").innerHTML=(CONF?`<span class="bd">Abordagem ${esc(cur)} · ${esc(a.nome)}</span>`:"")+esc([M.tipo,M.plataforma,M.formato,M.duracao,M.publico,M.objetivo&&"objetivo: "+M.objetivo,M.cta&&"CTA: "+M.cta].filter(Boolean).join(" · "))+(CONF&&Q.ajuste?" · "+esc(Q.ajuste):"");
+const tb=document.getElementById("tabs");tb.innerHTML=CONF?"":Q.abordagens.map(x=>`<button data-k="${x.id}" class="${x.id===cur?"on":""}">${esc(x.id)} · ${esc(x.nome)}</button>`).join("");
+tb.querySelectorAll("button").forEach(b=>b.onclick=()=>{cur=b.dataset.k;render()});
+document.getElementById("why").textContent=CONF?"":"Por que funciona: "+a.porque;
+document.getElementById("cg").innerHTML=`<col style="width:60px"><col style="width:${OR?27:36}%">`+(OR?`<col style="width:27%">`:"")+`<col><col style="width:92px">`;
+document.getElementById("hd").innerHTML=[U,T].concat(OR?["Texto original"]:[],["Visual","Link"]).map(x=>`<th>${x}</th>`).join("");
+document.getElementById("tb").innerHTML=a.linhas.map((l,i)=>`<tr><td>${i+1}${l.ini?`<span class="tm">\n${esc(l.ini)}–\n${esc(l.fim)}</span>`:""}<br><button class="ib aj" data-i="${i+1}" aria-label="Ajustar ${U.toLowerCase()} ${i+1}" title="Ajustar"><i class="ti ti-edit" aria-hidden="true"></i></button></td><td class="cp"><span>${esc(l.texto)}</span><button class="ib cb" aria-label="Copiar ${T.toLowerCase()} ${i+1}"><i class="ti ti-copy" aria-hidden="true"></i></button></td>`+(OR?`<td><i class="ti ${IC[l.status]||IC.w}" aria-hidden="true"></i> ${esc(l.original)}${l.mudancas?`<span class="mu">Mudanças: ${esc(l.mudancas)}</span>`:""}</td>`:"")+`<td>${esc(l.visual)}</td><td class="lk">${lkHtml(l.links)}</td></tr>`).join("");
+document.querySelectorAll(".cb").forEach(b=>b.onclick=()=>copy(b.previousElementSibling.innerText,b));
+document.querySelectorAll(".aj").forEach(b=>b.onclick=()=>sendPrompt(`Ajustar ${U.toLowerCase()} ${b.dataset.i}${CONF?"":" da abordagem "+cur}: `));
+const todo=()=>a.linhas.map((l,i)=>`${U.toUpperCase()} ${i+1}${tempo(l)?" ("+tempo(l)+")":""}\n${l.texto}`).join("\n\n");
+const B=CONF?[
+btn("b1","ti-clipboard-check","Copiar roteiro aprovado",e=>copyRich(plain(false),html(false),e.currentTarget,"Roteiro aprovado copiado, sem o texto original.")),
+btn("b2","ti-table","Copiar tabela completa",e=>copyRich(plain(true),html(true),e.currentTarget,"Tabela completa copiada.")),
+btn("b3","ti-download","Baixar arquivo para outra skill",e=>baixar(e.currentTarget)),
+btn("b4","ti-copy",`Copiar todo o texto`,e=>copy(todo(),e.currentTarget,"Texto copiado.")),
+btn("b5","","Aprovar roteiro ↗",()=>sendPrompt("Roteiro aprovado")),
+btn("b6","","Pedir ajuste ↗",()=>sendPrompt("Quero ajustar o roteiro: ")),
+btn("b7","","Voltar às abordagens ↗",()=>sendPrompt("Voltar às 3 abordagens"))]:[
+btn("b1","ti-copy",`Copiar todo o texto`,e=>copy(todo(),e.currentTarget,"Texto copiado.")),
+btn("b2","","Escolher esta abordagem ↗",()=>sendPrompt(`Escolho a abordagem ${cur} (${a.nome}), confirma o roteiro`)),
+btn("b3","","Misturar abordagens ↗",()=>sendPrompt("Quero misturar abordagens: ")),
+...(Q.videoCurto?[btn("b4","","Mais ganchos ↗",()=>sendPrompt(`Quero mais opções de gancho para a abordagem ${cur}`))]:[]),
+btn("b5","","Pedir ajuste ↗",()=>sendPrompt(`Quero ajustar a abordagem ${cur}: `))];
+const f=document.getElementById("foot");f.innerHTML=B.map(x=>x.html).join("");B.forEach(x=>document.getElementById(x.id).onclick=x.fn)}
+render();
+</script>

@@ -1,6 +1,6 @@
 ---
 name: roteirista-de-apoio
-description: Roteirista e copywriter para qualquer tipo de conteúdo — vídeo curto social (Reels, TikTok, Shorts, anúncio), vídeo animado/explicativo (motion, explainer, SaaS, institucional), peças estáticas (post, carrossel, story, banner, anúncio, legenda) e vídeo longo/narrativo (YouTube, documental, comercial, ficção), além de formatos que não se encaixem nesses. Começa com quiz obrigatório, entrega 3 abordagens em tabela enxuta, espera aprovação e depois monta o roteiro técnico completo — tabelas em bloco de código, com coluna de links de referência e, quando o usuário manda roteiro próprio, coluna de diferenças. Use SOMENTE quando o usuário pedir explicitamente, com frases como "usa a roteirista-de-apoio", "/roteirista-de-apoio", "aciona a roteirista", "chama a roteirista de apoio". Não dispara sozinha em pedidos genéricos de texto, nem dentro das skills BRABO, SAAS ou vendas-f9.
+description: Roteirista e copywriter para qualquer tipo de conteúdo — vídeo curto social (Reels, TikTok, Shorts, anúncio), vídeo animado/explicativo (motion, explainer, SaaS, institucional), peças estáticas (post, carrossel, story, banner, anúncio, legenda) e vídeo longo/narrativo (YouTube, documental, comercial, ficção), além de formatos que não se encaixem nesses. Começa com quiz obrigatório, entrega 3 abordagens num quadro visual interativo (copy, texto original quando a copy muda o texto do usuário, visual e links por cena, com botões de copiar, ajustar e escolher), espera a escolha e confirma o roteiro aprovado com botões para copiar, copiar sem o texto original e baixar um arquivo pronto para outra skill. Use SOMENTE quando o usuário pedir explicitamente, com frases como "usa a roteirista-de-apoio", "/roteirista-de-apoio", "aciona a roteirista", "chama a roteirista de apoio". Não dispara sozinha em pedidos genéricos de texto, nem dentro das skills BRABO, SAAS ou vendas-f9.
 ---
 
 # Roteirista de apoio
@@ -18,7 +18,7 @@ Quando houver conflito entre o guia do usuário e uma boa prática de copy, siga
 ## Fluxo
 
 ### 0. Leitura do pedido
-Leia tudo o que o usuário mandou (texto, arquivos, links, imagens, roteiros antigos). Guarde os links e caminhos de arquivo de referência — eles vão para a coluna Links nas cenas certas. Identifique:
+Leia tudo o que o usuário mandou (texto, arquivos, links, imagens, roteiros antigos). Guarde os links e caminhos de arquivo de referência — eles vão para a coluna Link nas cenas certas. Se o usuário mandou texto próprio, numere as linhas dele: é a base da coluna Texto original. Identifique:
 - **Tipo**: vídeo curto social · animado/explicativo · estático · longo/narrativo · outro (podcast, VSL, live, e-mail, apresentação, jingle, roteiro de site…).
 - **Formato recomendado**: se o usuário não definiu, proponha o que serve melhor ao objetivo (ex.: "isso funciona melhor como carrossel de 7 slides do que como post único, porque…"). Na dúvida entre dois formatos, pergunte no quiz.
 - **Guia**: há guia do usuário? Se sim, leia antes de qualquer coisa.
@@ -41,30 +41,24 @@ Pontos a travar (escolha os que faltam):
 
 Dê opções concretas nas perguntas (ex.: 3 tons possíveis), com a recomendada primeiro.
 
-### 2. Etapa 1 — 3 abordagens em tabela enxuta
+### 2. Etapa 1 — 3 abordagens no quadro
 Escreva **3 abordagens com ângulos realmente diferentes** (não três variações do mesmo texto). Exemplos de eixos: emocional × didático × provocativo; história × dado chocante × pergunta; problema → solução × antes/depois × mito/verdade.
 
-Cada abordagem já vem em **tabela enxuta** (Cena · Texto/Locução · Visual resumido · [Texto original] · Link), seguindo `references/formatos-de-saida.md` (Etapa 1). O texto completo da locução/copy está na tabela; o visual é só um resumo. Acima de cada tabela, fora dela: nome do ângulo, por que funciona para esse público, estrutura e duração estimada.
+Entregue as 3 num **quadro visual interativo** no chat, com uma aba por abordagem: monte o JSON de dados e preencha `assets/quadro.html` (`modo: "abordagens"`), como descrito em `references/formatos-de-saida.md`. O quadro é o padrão porque cabe na tela, permite copiar célula por célula e tem botões de ação; o bloco de código é só plano B.
 
-**Toda tabela vai dentro de um bloco de código**, com colunas alinhadas, **no máximo 86 caracteres de largura** (cabe na janela, sem rolagem lateral), **linha pontilhada entre cada cena** e coluna Cena fina (número em cima, tempo em duas linhas embaixo). Gere com `scripts/tabela.js` quando houver Node — ele quebra o texto, alinha e trava a largura. Detalhes e larguras em `formatos-de-saida.md`.
-
-**Colunas condicionais:**
-- **Link** (sempre a última): o link completo dentro da célula (quebrado em linhas se precisar) — vídeos (com minutagem no link sempre que possível, e o tempo legível entre parênteses), sites, fotos da internet ou arquivos locais do usuário (caminho completo). Sem referência, `—`. Nunca invente URL nem minutagem.
-- **Texto original**: só quando o usuário mandou um roteiro ou orientação como base. Cada célula começa com o emoji — ✅ manteve / ⚠️ ajustado / ❌ removido ou contradiz / ➕ novo — seguido do trecho original do usuário entre aspas e, se preciso, o motivo entre parênteses. Sem material de base, a coluna não existe.
+**Colunas, nesta ordem:** Cena/Frame/Slide (número, tempo em duas linhas, botão de ajustar) · Copy/Locução (texto final completo) · [Texto original] · Visual · Link.
+- **Texto original** só aparece se a coluna Copy/Locução **alterar** o texto que o usuário mandou. Quando aparece, traz o texto original **completo, como veio no guia**, com o status no começo (ajustado / mantido / removido / novo) e, embaixo, `Mudanças: (1) …; (2) …` corrido.
+- **Link**: links completos e clicáveis por cena — vídeos (com minutagem no link sempre que possível), sites, fotos da internet ou arquivos do computador do usuário (caminho completo). Sem referência, `—`. Nunca invente URL nem minutagem.
 
 Antes de mostrar, rode o **checklist interno** (abaixo) e reescreva o que falhar. Não mostre notas — entregue só o texto bom.
 
-Termine perguntando qual abordagem seguir e o que ajustar (pode misturar partes de abordagens diferentes). **Pare e espere a aprovação.** O texto é a fundação; fazer colunas antes de o texto estar aprovado gera retrabalho duplo.
+Fora do quadro, uma linha pedindo a escolha (pode misturar partes de abordagens). **Pare e espere.**
 
 ### 3. Ajustes
-Aplique os ajustes pedidos. Se o usuário pedir mudanças, mostre a tabela enxuta revisada e confirme antes de ir para a etapa 2 (a não ser que ele diga "pode seguir").
+Aplique os ajustes pedidos (pelos botões de ajustar cena ou por mensagem). Se mudar muito, mostre o quadro de abordagens revisado; se for pontual, siga para a confirmação.
 
-### 4. Etapa 2 — Roteiro técnico completo
-Detalhe **só a abordagem escolhida**, com todas as colunas, em bloco de código, usando o modelo de `references/formatos-de-saida.md` (Etapa 2):
-- **Vídeo**: Cena · Visual + tela (o que se vê, enquadramento, movimento, transição; termina com `TELA: …`) · Áudio (locução/diálogo, trilha, SFX) · [Texto original] · Link.
-- **Estático**: Slide/Peça · Visual (imagem, composição, destaque) · Copy + CTA · [Texto original] · Link. Mais legenda e hashtags se for social.
-
-O texto aprovado não muda na etapa 2, exceto cortes necessários para caber no tempo — e, se cortar, marque ⚠️ no texto original com o motivo.
+### 4. Etapa 2 — Confirmação
+É **só a confirmação da escolha**: a abordagem escolhida, com os ajustes aplicados, no mesmo quadro (`modo: "confirmacao"`), sem abas e sem colunas novas. Registre em `Mudanças` o que veio de ajuste pedido. O quadro traz os botões **Copiar roteiro aprovado** (sem texto original, para outro chat ou skill), **Copiar tabela completa**, **Baixar arquivo para outra skill** (`.md` com contexto e cenas, otimizado para a BRABO e outras skills lerem) e **Aprovar roteiro**. Quando o usuário aprovar, confirme em uma linha.
 
 ## Checklist interno (antes de cada entrega)
 - **Gancho**: os primeiros 1–3 s (vídeo) ou a headline (estático) dão motivo concreto para continuar? Seria entendido sem som?
@@ -86,7 +80,7 @@ O texto aprovado não muda na etapa 2, exceto cortes necessários para caber no 
 | Motion, explainer, SaaS, institucional animado | `references/explicativo-animado.md` |
 | Post, carrossel, story, banner, anúncio estático, legenda | `references/estatico.md` |
 | YouTube longo, documental, comercial com personagem, ficção | `references/longo-narrativo.md` |
-| Modelos de saída das etapas 1 e 2 | `references/formatos-de-saida.md` |
+| Quadro das etapas 1 e 2, dados JSON, botões, plano B | `references/formatos-de-saida.md` + `assets/quadro.html` |
 
 ## Entrega
-Tudo é entregue **no chat**, em português do Brasil (a menos que o usuário peça outro idioma). Respostas diretas: sem introdução longa nem resumo no fim — o roteiro é a resposta.
+Tudo é entregue **no chat**, no quadro visual (plano B: bloco de código com `scripts/tabela.js`), em português do Brasil (a menos que o usuário peça outro idioma). Respostas diretas: sem introdução longa nem resumo no fim — o roteiro é a resposta.
