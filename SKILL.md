@@ -46,10 +46,10 @@ Escreva **3 abordagens com ângulos realmente diferentes** (não três variaçõ
 
 Cada abordagem já vem em **tabela enxuta** (Cena · Tempo · Texto/Locução · Visual resumido · [Δ] · Links), seguindo `references/formatos-de-saida.md` (Etapa 1). O texto completo da locução/copy está na tabela; o visual é só um resumo. Acima de cada tabela, fora dela: nome do ângulo, por que funciona para esse público, estrutura e duração estimada.
 
-**Toda tabela vai dentro de um bloco de código**, com colunas alinhadas — fica compacta no chat e copiável. Detalhes em `formatos-de-saida.md`.
+**Toda tabela vai dentro de um bloco de código**, com colunas alinhadas, **no máximo 86 caracteres de largura** (cabe na janela, sem rolagem lateral) e **linha pontilhada entre cada cena**. Gere com `scripts/tabela.js` quando houver Node — ele quebra o texto, alinha e trava a largura. Detalhes e larguras em `formatos-de-saida.md`.
 
 **Colunas condicionais:**
-- **Links** (sempre a última): referências por cena — vídeos (com minutagem no link sempre que possível), sites, fotos da internet ou arquivos locais do usuário (caminho completo). Sem referência, `—`. Nunca invente URL nem minutagem.
+- **Link** (sempre a última): na tabela, só a etiqueta (`L1`, `L2`) ou `—`; abaixo do bloco, a legenda com o link completo e clicável — vídeos (com minutagem no link sempre que possível), sites, fotos da internet ou arquivos locais do usuário (caminho completo). Nunca invente URL nem minutagem.
 - **Δ (diferenças)**: só quando o usuário mandou um roteiro ou orientação como base. Marca cada linha com ✅ igual / ⚠️ ajustado (motivo) / ❌ removido ou contradiz (motivo). Sem material de base, a coluna não existe.
 
 Antes de mostrar, rode o **checklist interno** (abaixo) e reescreva o que falhar. Não mostre notas — entregue só o texto bom.
